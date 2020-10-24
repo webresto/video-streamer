@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>HLS</title>
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>  
+</head>
+<style>
+  body {
+    margin: 0;
+    background-image: url(dummy.jpg);
+  }
+
+  .vjs-control-bar {
+    display: none !important;  
+  }   
+</style>
+
+<body>
+  <video id="video" class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"></video>
+  <script>
+    var player = videojs('video', {
+      "controls": true,
+      "autoplay": false,
+      "preload": "auto",
+      "fluid": true
+    }, function() {
+      var streamVar = document.location.search ? document.location.search.split('stream=')[1] : "stream";
+      console.log("streamVar",streamVar)
+      var streamUrl = "/hls/" + streamVar + ".m3u8";
+      player.src({
+        type: "application/x-mpegURL",
+        src: streamUrl
+      });
+    });
+
+    player.on('error', function(e) {
+      document.getElementById("video").style.display = "none"; 
+      setTimeout(() => {
+        location.reload();
+      }, 60000);
+    })
+
+    function setPoster(player) {
+      player.muted(true);
+
+      player.play().then(function(){
+        player.pause();
+        player.hasStarted(false);
+        player.removeClass('btn-hide');
+
+        player.one('play', function(){
+          this.muted(false)
+        })
+      })
+    }
+    setPoster(player);
+  </script>
+</body>

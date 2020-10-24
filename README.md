@@ -12,7 +12,7 @@ How to use
 ----------
 
 1. Build and run the container (`docker build -t nginx_rtmp .` &
-   `docker run -p 1935:1935 -p 8080:80 --rm nginx_rtmp`).
+   `docker run -p 8080:80 --rm nginx_rtmp`).
 
 2. Stream your live content to `rtmp://localhost:1935/encoder/stream_name` where
    `stream_name` is the name of your stream.
@@ -22,6 +22,8 @@ How to use
    it might take a few (10-15) seconds before the stream works. This is because
    when you start streaming to the server, it needs to generate the first
    segments and the related playlists.
+
+4. run this command for get RTSP stream  `ffmpeg -stats -loglevel quiet -err_detect ignore_err -fflags +genpts -stimeout 5000000 -rtsp_transport tcp -i rtsp://strem_url -map_metadata -1 -f flv -map 0:0 -codec:v copy -vsync 0 -copyts -start_at_zero -an rtmp://localhost:1935/encoder/stream`
 
 
 Links

@@ -44,7 +44,7 @@ RUN ./configure --add-module=/src/nginx-rtmp-module-1.1.6 \
   make install
 
 ADD nginx.conf /config/nginx.conf
-ADD static /static
-
-WORKDIR /
+COPY static /static
+COPY player /app/player
+WORKDIR /app
 CMD "nginx"
