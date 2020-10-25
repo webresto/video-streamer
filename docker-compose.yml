@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  streamer:
+    image: webresto/video-streamer:latest
+    volumes:
+      - ./streamer/player:/player
+      - ./streamer/nginx.conf:/config/nginx.conf 
+    ports:
+      - "1935:1935"
+      - "3580:80"

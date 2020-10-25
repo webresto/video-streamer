@@ -7,7 +7,7 @@ EXPOSE 1935
 EXPOSE 80
 
 # create directories
-RUN mkdir /src /config /logs /data /static
+RUN mkdir /src /config /logs /data /static /player
 
 # update and upgrade packages
 RUN apt-get update && \
@@ -45,6 +45,6 @@ RUN ./configure --add-module=/src/nginx-rtmp-module-1.1.6 \
 
 ADD nginx.conf /config/nginx.conf
 COPY static /static
-COPY player /app/player
-WORKDIR /app
+COPY player /player
+WORKDIR /
 CMD "nginx"
